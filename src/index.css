@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  /* Colors - Light Mode */
+  --background: 0 0% 100%;
+  --foreground: 210 25% 7.8%;
+  --primary: 22 86% 53.5%;
+  /* #EF6D22 */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 22 10% 47.8%;
+  --muted: 240 2% 90%;
+  --muted-foreground: 22 25% 40%;
+  --accent: 22 80% 95%;
+  --accent-foreground: 22 86% 40%;
+  --card: 180 6.7% 97%;
+  --card-foreground: 210 25% 7.8%;
+  --border: 201.4 30.4% 91%;
+  --input: 200 23.1% 97.5%;
+  --ring: 202.8 89.1% 53.1%;
+
+  /* Spacing */
+  --spacing: 0.25rem;
+
+  /* Radius */
+  --radius: 0.2rem;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  --background: 0 0% 0%;
+  --foreground: 200 6.7% 91.2%;
+  --primary: 22 86% 53.5%;
+  --card: 228 9.8% 10%;
+  --card-foreground: 0 0% 85.1%;
+  --muted: 0 0% 9.4%;
+  --muted-foreground: 22 3.4% 46.3%;
+  --accent: 22 40% 15%;
+  --accent-foreground: 22 86% 53.5%;
+  --border: 210 5.3% 14.9%;
+  --input: 207.7 27.7% 18.4%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base Utility Classes */
+.bg-background {
+  background-color: hsl(var(--background));
+}
+
+.bg-card {
+  background-color: hsl(var(--card));
+}
+
+.bg-primary {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+.bg-accent {
+  background-color: hsl(var(--accent));
+}
+
+.bg-input {
+  background-color: hsl(var(--input));
+}
+
+.text-foreground {
+  color: hsl(var(--foreground));
+}
+
+.text-primary {
+  color: hsl(var(--primary));
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+
+.border {
+  border: 1px solid hsl(var(--border));
+}
+
+.border-primary {
+  border-color: hsl(var(--primary));
+}
+
+.rounded-lg {
+  border-radius: var(--radius);
+}
+
+.rounded-md {
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.rounded-sm {
+  border-radius: calc(var(--radius) - 4px);
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+/* Layout Helpers */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.m-4 {
+  margin: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-\[300px_1fr\] {
+    grid-template-columns: 300px 1fr;
+  }
+
+  .lg\:h-full {
+    height: 100%;
+  }
+
+  .lg\:overflow-hidden {
+    overflow: hidden;
+  }
+}
+
+/* Specific Component Styles */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+input,
+button {
+  font-family: inherit;
+  outline: none;
+}
+
+input:focus {
+  outline: 2px solid hsl(var(--ring));
+  border-color: hsl(var(--primary));
+}
+
+button {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--border));
+}

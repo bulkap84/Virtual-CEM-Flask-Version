@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Coach VPM</title>
+    <!-- Tailwind via CDN for simplicity -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(214.3 31.8% 91.4%)",
+                        input: "hsl(214.3 31.8% 91.4%)",
+                        ring: "hsl(215 20.2% 65.1%)",
+                        background: "hsl(0 0% 100%)",
+                        foreground: "hsl(222.2 47.4% 11.2%)",
+                        primary: "#EF6D22", // Brand Orange
+                        "primary-foreground": "hsl(210 40% 98%)",
+                        muted: "hsl(210 40% 96.1%)",
+                        "muted-foreground": "hsl(215.4 16.3% 46.9%)",
+                        card: "hsl(0 0% 100%)",
+                        "card-foreground": "hsl(222.2 47.4% 11.2%)",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar to match original */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .list-disc {
+            list-style-type: disc;
+        }
+
+        .prose ul {
+            padding-left: 1.5rem;
+            margin-left: 2.5rem;
+        }
+
+        /* Matches ml-10 pl-6 */
+        .prose li {
+            margin-left: 0.75rem;
+        }
+
+        /* Matches ml-3 */
+    </style>
+</head>
+
+<body class="h-full bg-background flex flex-col font-sans text-foreground overflow-hidden">
+
+    <!-- HEADER -->
+    <header
+        class="h-14 border-b border-border bg-card/80 backdrop-blur px-6 flex items-center justify-between shrink-0 z-10 w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="#EF6D22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <span class="font-bold text-sm tracking-tight hidden md:inline-block">Virtual Performance Manager</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="relative group hidden md:block">
+                <select id="dealer-select"
+                    class="appearance-none bg-muted/50 border rounded-sm px-4 py-1.5 pr-8 text-xs font-semibold text-muted-foreground hover:bg-muted hover:border-primary/30 transition-all cursor-pointer outline-none focus:ring-1 focus:ring-primary/20">
+                    <!-- Options populated by JS -->
+                </select>
+                <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none opacity-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="h-4 w-[1px] bg-border mx-1"></div>
+
+            <button id="btn-login"
+                class="text-xs font-medium px-3 py-1.5 rounded-sm bg-primary text-white hover:bg-primary/90 transition-colors">
+                Log In
+            </button>
+            <div id="user-info"
+                class="hidden text-xs text-muted-foreground font-medium bg-muted/50 px-3 py-1.5 rounded-full border border-border/50">
+                <!-- User Name -->
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <div class="flex-1 flex overflow-hidden">
+
+        <!-- SIDEBAR (CEM Finder) -->
+        <aside class="w-[300px] border-r border-border bg-muted/10 flex flex-col hidden md:flex">
+            <div class="p-6 border-b border-border/40">
+                <h2 class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Your CEM</h2>
+                <div class="text-[10px] text-muted-foreground/70">Dedicated Support Contact</div>
+            </div>
+
+            <div class="p-6 flex flex-col items-center text-center">
+                <div class="relative mb-4 group cursor-pointer">
+                    <div
+                        class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-105 group-hover:shadow-xl">
+                        <img id="cem-photo" src="" alt="CEM" class="w-full h-full object-cover bg-gray-100">
+                    </div>
+                    <div class="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full flex items-center justify-center shadow-sm"
+                        title="Available">
+                        <div class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+
+                <h3 id="cem-name" class="font-bold text-foreground text-lg mb-1 tracking-tight">Loading...</h3>
+                <p
+                    class="text-xs text-muted-foreground font-medium mb-4 flex items-center gap-1.5 bg-muted/50 px-3 py-1 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary/70"></span>
+                    Customer Engagement Manager
+                </p>
+
+                <div class="w-full space-y-2 mt-2">
+                    <a id="cem-link" href="#" target="_blank"
+                        class="flex items-center justify-center gap-2 w-full p-2 text-xs font-medium text-white bg-primary hover:bg-primary/90 rounded-md transition-all shadow-sm hover:shadow active:scale-[0.98]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        Schedule with me
+                    </a>
+
+                    <div
+                        class="flex items-center justify-center gap-2 w-full p-2 text-xs font-medium text-foreground bg-white border border-border hover:bg-muted/30 rounded-md transition-all cursor-default group/email">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-muted-foreground group-hover/email:text-primary transition-colors">
+                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                        <span id="cem-email" class="truncate max-w-[180px]">...</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CHAT AREA -->
+        <main class="flex-1 flex flex-col bg-background relative">
+            <!-- Messages -->
+            <div id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth">
+                <!-- Messages injected here -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 md:p-6 bg-background/95 backdrop-blur border-t border-border z-10 w-full max-w-4xl mx-auto">
+                <form id="input-form"
+                    class="relative group shadow-sm transition-shadow focus-within:shadow-md rounded-xl">
+                    <input id="chat-input" type="text" placeholder="Ask about your dealership performance..."
+                        class="w-full bg-muted/30 border border-border text-foreground rounded-xl pl-4 pr-12 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 focus:bg-background transition-all placeholder:text-muted-foreground/60"
+                        autocomplete="off">
+                    <button type="submit"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+                <div class="text-[10px] text-center mt-3 text-muted-foreground/60 font-medium">
+                    AI can make mistakes. Please verify important information.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="/static/js/cem-data.js"></script>
+    <script src="/static/js/coach-service.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>

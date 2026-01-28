@@ -1,0 +1,2 @@
+Checking directory: C:\Virtual CEM Flask\static\img
+Directory does NOT exist!
