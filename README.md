@@ -6,9 +6,30 @@ A lightweight, monolithic version of the Virtual CEM application using **Flask**
 - **Backend**: Flask (Python) serves HTML templates and proxies API requests.
 - **Frontend**: Plain HTML/JS (No Build Step).
 - **Styling**: Tailwind CSS (via CDN).
-- **Auth**: SAML 2.0 Service Provider.
+- **Auth**: SAML 2.0 Service Provider (python3-saml).
 
-## Project Structure
+## SAML 2.0 Setup
+The application is configured as a Service Provider (SP). You must configure your Identity Provider (IdP) with the following settings:
+
+| Parameter | Value |
+| :--- | :--- |
+| **Entity ID (Audience)** | `https://cem.mykaarma.com` |
+| **ACS URL (Callback)** | `https://cem.mykaarma.com/login/saml/callback` |
+| **Logout URL** | `https://cem.mykaarma.com/logout/callback` |
+| **NameID Format** | `urn:oasis:names:tc:SAML:2.0:nameid-format:transient` |
+
+### Required Attributes
+Ensure your IdP maps the following attributes to the SAML assertion:
+- `email` (User's email)
+- `firstName` (User's first name)
+- `lastName` (User's last name)
+- `dealerUuid` (Vitally/Dealer UUID for context switching)
+
+### Certificates
+To complete the handshake, you must provide your IdP's x.509 certificate via an environment variable:
+```bash
+SAML_IDP_CERT="MIID..." # Single line, no headers
+```
 ```
 /
 ├── app.py              # Main Flask Application
